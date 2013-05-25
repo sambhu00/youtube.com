@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Ant-Test" default="main" basedir=".">
+    <property name="src.dir" location="src"></property>
+    <property name="build.dir" location="bin"></property>
+    <property name="dist.dir" location="dist"></property>
+    <property name="docs.dir" location="docs"></property>
+    
+    <target name="clean">
+        <delete dir="${build.dir}"></delete>
+        <delete dir="${docs.dir}"></delete>
+        <delete dir="${dist.dir}"></delete>
+    </target>
+    
+    <target name="makedir">
+        <mkdir dir="${build.dir}"></mkdir>
+        <mkdir dir="${docs.dir}"></mkdir>
+        <mkdir dir="${dist.dir}"></mkdir>
+    </target>
+        
+    
+    <target name="compile" depends="clean,makedir">
+        <javac srcdir="${src.dir}" destdir="${build.dir}"></javac>
+    </target>
+    
+    <target name="docs" depends="compile">
+        <javadoc packagenames="src" sourcepath="${src.dir}" destdir="${docs.dir}">
+            <fileset dir="$src.dir">
+                <include name="*"></include>
+            </fileset>
+        </javadoc>
+    </target>
+    
+    <target name="jar" depends="compile">
+        <jar destfile="${dist.dir}\abc.jar" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="AntTestApp.main"></attribute>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="main" depends="compile,jar,docs">
+        <description>Main target</description>
+    </target>
+</project>
